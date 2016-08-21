@@ -19,6 +19,7 @@ var SuffButton = ["apple", "banna", "orange", "kiwi"]; //화면에 표시되는�
 var srtLast = 0; //srt파싱된것의 마지막 번호
 var stop4quiz = false;
 var player;
+var press_passed = false;
 $(document).ready(function () {
     /////////영어 음절 테스트
     console.log("page ready!");
@@ -34,7 +35,7 @@ $(document).ready(function () {
 
 function colorize(sen) {
     return sen.replace(/\B([A-Z]+)/g, function (a) {
-        return '<span style="color:darkgreen">' + a.toLowerCase() + '</span>';
+        return '<span style="color:#5f5f5f">' + a.toLowerCase() + '</span>';
     });
 }
 
@@ -42,6 +43,28 @@ function right_click(my) {
     responsiveVoice.cancel();
     responsiveVoice.speak(my.innerHTML);
     console.log("right_click")
+}
+
+function mouseDown(my, event) {
+    if (event.which == 1) {
+        responsiveVoice.cancel();
+        console.log("mouse_down");
+        pressTimer = window.setTimeout(function () {
+            responsiveVoice.speak(my.innerHTML);
+            press_passed = true;
+        }, 200);
+    }
+}
+
+function mouseUp(my, event) {
+    if (event.which == 1) {
+        clearTimeout(pressTimer);
+        console.log("mouse_up");
+        if (!press_passed) {
+            my_dis(my);
+        }
+        press_passed = false;
+    }
 }
 
 function HtmlDecode(s) {
@@ -414,7 +437,7 @@ function check_where() {
                 });
                 SuffButton = shuffle(SuffButton);
                 [0, 1, 2, 3].forEach(function (my_x) {
-                    $("#buttonP").append('<div class="textboxWidth" style=" float: left;"><button oncontextmenu="right_click(this);return false;" id=b' + my_x + ' class="btn btn-primary btn-lg center-block" style="color:#000;font-size:17px;position: relative; display: block; height:80px;width:85%; padding:0; margin:0 auto;" onclick="my_dis(this)">' + wordOnly(SuffButton[my_x]) + "</button></div>");
+                    $("#buttonP").append('<div class="textboxWidth" style=" float: left;"><button onmousedown="mouseDown(this,event)" onmouseup="mouseUp(this,event)" oncontextmenu="right_click(this);return false;" id=b' + my_x + ' class="btn btn-primary btn-lg center-block" style="color:#000;font-size:17px;position: relative; display: block; height:80px;width:85%; padding:0; margin:0 auto;" >' + wordOnly(SuffButton[my_x]) + "</button></div>");
                 });
                 $("#textP").html("");
                 nxtWhere();
@@ -448,7 +471,7 @@ function my_dis(my) {
         });
         SuffButton = shuffle(SuffButton);
                 [0, 1, 2, 3].forEach(function (my_x) {
-            $("#buttonP").append('<div class="textboxWidth" style="float: left;"><button oncontextmenu="right_click(this); return false;" id=b' + my_x + ' class="btn btn-primary btn-lg center-block" style="color:#000;font-size:17px;position: relative; display: block; height:80px;width: 85%;padding: 0; margin:0 auto;" onclick="my_dis(this)">' + wordOnly(SuffButton[my_x]) + "</button></div>");
+            $("#buttonP").append('<div class="textboxWidth" style="float: left;"><button onmousedown="mouseDown(this,event)" onmouseup="mouseUp(this,event)" oncontextmenu="right_click(this); return false;" id=b' + my_x + ' class="btn btn-primary btn-lg center-block" style="color:#000;font-size:17px;position: relative; display: block; height:80px;width: 85%;padding: 0; margin:0 auto;" >' + wordOnly(SuffButton[my_x]) + "</button></div>");
         });
         //$("#textP").append(unshuffled[howMany_del]);
         $("#textP").append(colorize(unshuffled[howMany_del]) + " ");
