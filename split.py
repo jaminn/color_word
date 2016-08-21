@@ -1,15 +1,6 @@
 #-*- coding: utf-8 -*-
-import sys
-reload(sys)
-sys.setdefaultencoding('utf-8')
 
-import re
-import pip
-
-def install(package):
-    pip.main(['install', package])
-
-install('pyphen')    
+import re    
 import pyphen
 
 pyphen.language_fallback('nl_NL_variant1')
@@ -40,7 +31,7 @@ def toNew(mystr):
         else:
             nonWords.append(w)
             newString += w
-    return unicode(newString)
+    return newString
 
 if __name__ == "__main__":
     print(toNew(u"Europeans are heading to Charleston because they've heard about the food and the architecture. It's getting great press, and it's having a moment."))
