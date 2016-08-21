@@ -32,9 +32,16 @@ $(document).ready(function () {
     //document.getElementById('player').style.pointerEvents = 'none'; //실사용시 add this line
 });
 
-function colorize(sen){
-    return sen.replace(/\B([A-Z]+)/g, function(a) {
-        return '<span style="color:darkgreen">'+a.toLowerCase()+'</span>';});
+function colorize(sen) {
+    return sen.replace(/\B([A-Z]+)/g, function (a) {
+        return '<span style="color:darkgreen">' + a.toLowerCase() + '</span>';
+    });
+}
+
+function right_click(my) {
+    responsiveVoice.cancel();
+    responsiveVoice.speak(my.innerHTML);
+    console.log("right_click")
 }
 
 function HtmlDecode(s) {
@@ -93,15 +100,15 @@ function getSubTry(data, event) {
     });
     srtLast = parsed_srt.length - 1;
     //////////////영어 음절 테스트
-        parsed_srt.forEach(function (value) {
-            $.getJSON($SCRIPT_ROOT + '/_tonew', {
-                a: value.text
-            }, function (data) {
-                value.text = data.result
+    parsed_srt.forEach(function (value) {
+        $.getJSON($SCRIPT_ROOT + '/_tonew', {
+            a: value.text
+        }, function (data) {
+            value.text = data.result
                 //newtexts.push(data.result);
-            });
         });
-        //////////////영어 음절 테스트
+    });
+    //////////////영어 음절 테스트
     event.target.cueVideoById({
         videoId: p['vid']
     });
@@ -142,7 +149,7 @@ function onPlayerReady(event) {
                 a: value.text
             }, function (data) {
                 value.text = data.result
-                //newtexts.push(data.result);
+                    //newtexts.push(data.result);
             });
         });
         //////////////영어 음절 테스트
@@ -407,7 +414,7 @@ function check_where() {
                 });
                 SuffButton = shuffle(SuffButton);
                 [0, 1, 2, 3].forEach(function (my_x) {
-                    $("#buttonP").append('<div class="textboxWidth" style=" float: left;"><button id=b' + my_x + ' class="btn btn-primary btn-lg center-block" style="color:#000;font-size:17px;position: relative; display: block; height:80px;width:85%; padding:0; margin:0 auto;" onclick="my_dis(this)">' + wordOnly(SuffButton[my_x]) + "</button></div>");
+                    $("#buttonP").append('<div class="textboxWidth" style=" float: left;"><button oncontextmenu="right_click(this);return false;" id=b' + my_x + ' class="btn btn-primary btn-lg center-block" style="color:#000;font-size:17px;position: relative; display: block; height:80px;width:85%; padding:0; margin:0 auto;" onclick="my_dis(this)">' + wordOnly(SuffButton[my_x]) + "</button></div>");
                 });
                 $("#textP").html("");
                 nxtWhere();
@@ -441,7 +448,7 @@ function my_dis(my) {
         });
         SuffButton = shuffle(SuffButton);
                 [0, 1, 2, 3].forEach(function (my_x) {
-            $("#buttonP").append('<div class="textboxWidth" style="float: left;"><button id=b' + my_x + ' class="btn btn-primary btn-lg center-block" style="color:#000;font-size:17px;position: relative; display: block; height:80px;width: 85%;padding: 0; margin:0 auto;" onclick="my_dis(this)">' + wordOnly(SuffButton[my_x]) + "</button></div>");
+            $("#buttonP").append('<div class="textboxWidth" style="float: left;"><button oncontextmenu="right_click(this); return false;" id=b' + my_x + ' class="btn btn-primary btn-lg center-block" style="color:#000;font-size:17px;position: relative; display: block; height:80px;width: 85%;padding: 0; margin:0 auto;" onclick="my_dis(this)">' + wordOnly(SuffButton[my_x]) + "</button></div>");
         });
         //$("#textP").append(unshuffled[howMany_del]);
         $("#textP").append(colorize(unshuffled[howMany_del]) + " ");
