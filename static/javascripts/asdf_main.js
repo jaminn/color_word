@@ -40,7 +40,7 @@ function colorize(sen) {
 }
 
 function right_click(my) {
-    responsiveVoice.cancel();
+    //responsiveVoice.cancel();
     responsiveVoice.speak(my.innerHTML);
     console.log("right_click")
 }
